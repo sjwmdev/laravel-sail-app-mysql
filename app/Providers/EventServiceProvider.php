@@ -5,7 +5,8 @@ namespace App\Providers;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
+use App\Events\NewNotificationEvent;
+use App\Listeners\NotificationSMSListener;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -17,6 +18,24 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+        'App\Events\ModelCreated' => [
+            'App\Listeners\ActivityLogListener',
+        ],
+        'App\Events\ModelUpdated' => [
+            'App\Listeners\ActivityLogListener',
+        ],
+        'App\Events\ModelDeleted' => [
+            'App\Listeners\ActivityLogListener',
+        ],
+        'App\Events\ModelRestored' => [
+            'App\Listeners\ActivityLogListener',
+        ],
+        'App\Events\ModelForceDeleted' => [
+            'App\Listeners\ActivityLogListener',
+        ],
+        NewNotificationEvent::class => [
+            NotificationSMSListener::class,
         ],
     ];
 
